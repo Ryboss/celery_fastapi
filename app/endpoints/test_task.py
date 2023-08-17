@@ -5,6 +5,8 @@ from fastapi import APIRouter, Depends, status
 from fastapi.exceptions import HTTPException
 from fastapi_cache.decorator import cache
 
+from app.core.celery_app import test_task
+
 router = APIRouter(prefix="/api/v1/celery/tasks", tags=["v1", "Celery"])
 
 
@@ -36,7 +38,7 @@ async def check_mail(email: str, content: str) -> str:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Низя")
 
 
-@router.get("/send_email_with_class")
+@router.post("/send_email_with_class")
 @cache(expire=90)
 async def send_email_class(
     email: MailMessage = Depends(MailMessage),
@@ -49,7 +51,7 @@ async def send_email_class(
     return True
 
 
-@router.get("/send_email_with_func")
+@router.post("/send_email_with_func")
 @cache(expire=90)
 async def send_email_func(
     email: str = Depends(check_mail),
@@ -58,4 +60,16 @@ async def send_email_func(
     ОТправка письма
     """
 
+    return True
+
+
+@router.post("/celery_send_mail")
+async def celery_send_mail(
+    # email: MailMessage = Depends(MailMessage),
+) -> bool:
+    """
+    Отправка письма с помощью Celery
+    """
+
+    test_task.delay()
     return True
