@@ -1,0 +1,93 @@
+[tool.pyright]
+exclude = ["**/node_modules",
+	"**/__pycache__",
+	"migrations/versions"
+]
+
+[tool.ruff]
+line-length = 180
+show-fixes = true
+target-version = "py311"
+extend-select = [
+	"A", # flake8-builtins
+	"ANN", # flake8-annotations
+	"B", # flake8-bugbear
+	"BLE", # flake8-blind-except
+	"C4", # flake8-comprehensions
+	"C90", # mccabe
+	"COM", # flake8-comma
+	"D", # pydocstyle
+	"DTZ", # flake8-datetimez
+	"E", # Pycodestyle errors
+	# "ERA", # eradicate
+	"I", # isort
+	"ICN", # flake8-import-conventions
+	"INP", # flake8-no-pep420
+	"ISC", # flake8-implicit-str-concat
+	"N", # pep8-naming
+	"PGH", # pygrep-hooks
+	"PIE", # flake8-pie
+	"PL", # pylint (convention (PLC), error (PLE), refactor (PLR), warning (PLW))
+	"PTH", # flake8-use-pathlib
+	"Q", # flake8-quotes
+	"RET", # flake8-return
+	"RSE", # flake8-raise
+	# "RUF", # ruff
+	"S", # flake8-bandit
+	"SIM", # flake8-simplify
+	"T20", # flake8-print
+	"TCH", # flake8-type-checking
+	"TID", # flake8-tidy-imports
+	"UP", # pyupgrade
+	"W", # Pycodestyle warnings
+	"YTT", # flake8-2020
+]
+ignore = [
+	"ANN401", # Dynamically typed expressions (typing.Any) are disallowed
+	"B008", # Do not perform function call `<name>` in argument defaults (false positive on FastAPI)
+	"B905", # `zip()` without an explicit `strict=` parameter
+	"BLE001", # Do not catch blind exception: `Exception`
+	"D100", # Missing docstring in public module
+	"D104", # Missing docstring in public package
+	"D105", # Missing docstring in magic method
+	"D106", # Missing docstring in public nested class
+	"D107", # Missing docstring in `__init__`
+	"D200", # One-line docstring should fit on one line
+	"D201", "D202", # No blank lines allowed before/after function docstring
+	"D203", # One blank line before class (conflict with D211: No blank line before class)
+	"D212", # Multi-line docstring summary should start at the first line
+	"D400", "D415", # First line should end with a period, question mark, or exclamation point
+	"D403", # First word of the first line should be properly capitalized
+	"N801", # Clas name `<name>` should use CapWords convention
+	"N802", # Function name `<name>` should be lowercase
+	"N812", # Lowercase `<name>` imported as non-lowercase `<asname>`
+	"PLC0414", # Import alias does not rename original package
+	"PLR091", # Too many arguments / branches / statements / returns
+	"PLR2004", # Magic value used in comparison, consider replacing <value> with a constant variable
+	# "E402", "N818", "S101"
+]
+ignore-init-module-imports = true
+
+[tool.ruff.flake8-annotations]
+suppress-dummy-args = true
+
+[tool.ruff.flake8-builtins]
+builtins-ignorelist = ["datetime", "dict", "id", "input", "format", "type", "zip"]
+
+[tool.ruff.flake8-quotes]
+avoid-escape = false # Don't bother trying to avoid escapes.
+docstring-quotes = "double"
+inline-quotes = "double"
+multiline-quotes = "double"
+
+[tool.ruff.isort]
+force-sort-within-sections = true
+force-to-top = ["logging", "typing"] # "collections.abc"
+lines-between-types = 1 # Use a single line between direct and from import
+split-on-trailing-comma = false
+
+[tool.ruff.pep8-naming]
+classmethod-decorators = ["pydantic.validator"] # Allow Pydantic's `@validator` decorator to trigger class method treatment.
+
+[tool.ruff.pycodestyle]
+ignore-overlong-task-comments = true
