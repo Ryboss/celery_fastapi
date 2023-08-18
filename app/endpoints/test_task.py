@@ -38,10 +38,9 @@ async def check_mail(email: str, content: str) -> str:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Низя")
 
 
-@router.post("/send_email_with_class")
+@router.get("/send_email_with_class")
 @cache(expire=90)
 async def send_email_class(
-    email: MailMessage = Depends(MailMessage),
 ) -> bool:
     """
     ОТправка письма
@@ -52,7 +51,7 @@ async def send_email_class(
 
 
 @router.post("/send_email_with_func")
-@cache(expire=90)
+# @cache(expire=90)
 async def send_email_func(
     email: str = Depends(check_mail),
 ) -> bool:
@@ -65,11 +64,11 @@ async def send_email_func(
 
 @router.post("/celery_send_mail")
 async def celery_send_mail(
-    # email: MailMessage = Depends(MailMessage),
+    email: MailMessage = Depends(MailMessage),
 ) -> bool:
     """
     Отправка письма с помощью Celery
     """
 
-    test_task.delay()
+    test_task.delay(email=email.email, context=email.content)
     return True

@@ -1,2 +1,5 @@
 celery==5.3.*
 fastapi==0.101.1
+fastapi-cache2==0.2.1
+redis==4.6.*
+flower==2.0.1

@@ -4,6 +4,7 @@ from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
 from starlette.middleware.cors import CORSMiddleware
 
+from app.core.config import REDIS_HOST
 from app.endpoints import test_task
 
 app = FastAPI(title="Celery Test", description="Тестовое использование Celery для фоновых задач", version="1.0.0")
@@ -25,5 +26,9 @@ async def startup():
     Запуск приложения
     """
 
-    redis = aioredis.from_url("redis://localhost", encoding="utf-8", decode_responses=True)
-    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cash")
+    try:
+        redis = aioredis.from_url(f"redis://{REDIS_HOST}", encoding="utf-8", decode_responses=True)
+
+        FastAPICache.init(RedisBackend(redis), prefix="fastapi-cash")
+    except Exception:
+        return "Не удавлось подключиться к редис"
